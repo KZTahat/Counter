@@ -1,6 +1,7 @@
 import React from "react";
 import Button from "react-bootstrap/Button";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 class Counter extends React.Component {
   render() {
@@ -27,7 +28,7 @@ class Counter extends React.Component {
           variant="danger"
           style={{ margin: "15px" }}
         >
-          Delete
+          <i class="fas fa-trash"></i>
         </Button>
       </div>
     );

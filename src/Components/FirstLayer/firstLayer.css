@@ -1,0 +1,10 @@
+/* ##################### NabBar CSS ############################# */
+/* Nav.Link.lastchild{float: right;} */
+#cartTag{position: absolute; right: 20px;}
+
+/* ##################### Counters CSS ########################### */
+#cartDiv{margin-left: 200px;margin-top: 50px;}
+
+/* ##################### Footer CSS ############################# */
+.gitHub{text-decoration: none;color: rgb(29, 27, 27);padding-left: 10px;}
+#footer{position: absolute; bottom: 0px; width: 100%;}
