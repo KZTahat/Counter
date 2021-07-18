@@ -4,6 +4,7 @@ import NavBar from "./Components/FirstLayer/NavBar";
 import Footer from "./Components/FirstLayer/Footer";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import "./App.css";
+import axios from "axios";
 
 class App extends React.Component {
   constructor(props) {
@@ -50,6 +51,20 @@ class App extends React.Component {
     this.setState({
       items: newItems,
     });
+  };
+
+  componentDidMount = async () => {
+    if (this.state.items.length == 0) {
+      let response = [];
+      try {
+        response = await axios.get(`${process.env.REACT_APP_SERVER}/getlists`);
+      } catch {
+        console.log("response %" + response);
+      }
+      this.setState({
+        items: response.data,
+      });
+    }
   };
 
   render() {

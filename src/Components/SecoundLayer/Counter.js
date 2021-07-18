@@ -28,7 +28,7 @@ class Counter extends React.Component {
           variant="danger"
           style={{ margin: "15px" }}
         >
-          <i class="fas fa-trash"></i>
+          <i className="fas fa-trash"></i>
         </Button>
       </div>
     );
