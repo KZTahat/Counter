@@ -9,39 +9,52 @@ class Counters extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      showCheckOutModel: false,
+      showModel: false,
     };
   }
 
   showCheckoutModel = () => {
     this.setState({
-      showCheckOutModel: true,
+      showModel: true,
+    });
+  };
+  hideModel = () => {
+    this.setState({
+      showModel: false,
     });
   };
 
   render() {
-    
     const { onDecrement, onIncrement, onDelete, items } = this.props;
+    let totalPrice = 0;
     return (
       <div id="cartDiv">
-        {items.map((element) => {          
+        {items.map((element) => {
+          totalPrice = (totalPrice + (element.price * element.counts));
           return (
             <Counter
               key={element.id}
-              id={element.id}
-              counts={element.counts}
+              element={element}
               onDecrement={onDecrement}
               onIncrement={onIncrement}
               onDelete={onDelete}
             />
           );
-        })}        
+        })}
         {items.length > 0 && (
-          <Button onClick={this.showCheckoutModel} variant="secondary">
-            CeckOut
-          </Button>
+          <>
+            <hr />
+            <p id="totalPriceSpan">Total Price : {totalPrice} $</p>
+            <Button onClick={this.showCheckoutModel} variant="secondary">
+              CeckOut
+            </Button>
+          </>
         )}
-        <CheckOutModel />
+        <CheckOutModel
+          showModel={this.state.showModel}
+          hideModel={this.hideModel}
+          totalPrice={totalPrice}
+        />
       </div>
     );
   }

@@ -1,34 +1,35 @@
 import React from "react";
-import Button from "react-bootstrap/Button";
+import {Button, Badge} from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 class Counter extends React.Component {
   render() {
-    const { onDecrement, onIncrement, onDelete, id, counts } = this.props;
+    const { onDecrement, onIncrement, onDelete, element } = this.props;
     return (
       <div>
+        <Badge bg="primary">{element.original_title}</Badge>
+        <Badge bg="info">{element.price} $</Badge>
         <Button
-          onClick={() => onDecrement(id)}
+          onClick={() => onDecrement(element.id)}
           variant="warning"
           style={{ margin: "15px" }}
         >
           -
         </Button>
-        <span>{counts}</span>
+        <span style={{color: 'yellow'}}>{element.counts}</span>
         <Button
-          onClick={() => onIncrement(id)}
+          onClick={() => onIncrement(element.id)}
           variant="success"
           style={{ margin: "15px" }}
         >
           +
         </Button>
         <Button
-          onClick={() => onDelete(id)}
+          onClick={() => onDelete(element.id)}
           variant="danger"
           style={{ margin: "15px" }}
         >
-          <i className="fas fa-trash"></i>
+          Delete
         </Button>
       </div>
     );

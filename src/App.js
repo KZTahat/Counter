@@ -1,72 +1,95 @@
 import React from "react";
+import axios from "axios";
+import Products from "./Components/FirstLayer/Products";
 import Counters from "./Components/FirstLayer/Counters";
 import NavBar from "./Components/FirstLayer/NavBar";
 import Footer from "./Components/FirstLayer/Footer";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import "./App.css";
-import axios from "axios";
 
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      items: [
-        { id: 0, counts: 1, limit: 5 },
-        { id: 1, counts: 1, limit: 10 },
-        { id: 2, counts: 1, limit: 7 },
-        { id: 3, counts: 1, limit: 22 },
-        { id: 4, counts: 1, limit: 3 },
-        { id: 5, counts: 1, limit: 16 },
-      ],
+      items: [],
     };
   }
 
-  onDecrement = (id) => {
-    let newItems = this.state.items.map((element) => {
-      if (element.id === id && element.counts !== 1) {
-        element.counts = element.counts - 1;
-      }
-      return element;
-    });
-    this.setState({ items: newItems });
-  };
-
-  onIncrement = (id) => {
-    let newItems = this.state.items.map((element) => {
-      if (element.id === id && element.counts < element.limit) {
-        element.counts = element.counts + 1;
-      }
-      return element;
-    });
-    this.setState({ items: newItems });
-  };
-
-  onDelete = (id) => {
-    let newItems = [];
-    this.state.items.forEach((element) => {
-      if (!(element.id === id)) {
-        newItems.push(element);
-      }
-    });
-    this.setState({
-      items: newItems,
-    });
-  };
-
+  // Getting Cart Items at refreash :)
   componentDidMount = async () => {
-    if (this.state.items.length == 0) {
-      let response = [];
-      try {
-        response = await axios.get(`${process.env.REACT_APP_SERVER}/getlists`);
-      } catch {
-        console.log("response %" + response);
+    let response = await axios.get(
+      `${process.env.REACT_APP_SERVER}/getcartitems`
+    );
+    this.setState({
+      items: response.data,
+    });
+  };
+
+  // Decrementing counts in cart
+  onDecrement = async (id) => {
+    let response = await axios.put(
+      `${process.env.REACT_APP_SERVER}/decreascount/${id}?`
+    );
+    let newItems = this.state.items.map((element) => {
+      if (element.id === id) {
+        element.counts = response.data.counts;
       }
+      return element;
+    });
+    this.setState({ items: newItems });
+  };
+
+  // Incrementing counts in cart
+  onIncrement = async (id) => {
+    let response = await axios.put(
+      `${process.env.REACT_APP_SERVER}/increascounts/${id}?`
+    );
+    let newItems = this.state.items.map((element) => {
+      if (element.id === id) {
+        element.counts = response.data.counts;
+      }
+      return element;
+    });
+    this.setState({ items: newItems });
+  };
+
+  // Deleting Items From Cart
+  onDelete = async (id) => {
+    let response = await axios.delete(
+      `${process.env.REACT_APP_SERVER}/deleteitem/${id}?`
+    );
+    this.setState({
+      items: response.data,
+    });
+  };
+
+  // Adding Items To Cart
+  addToCart = async (id, element) => {
+    let flag = false;
+    this.state.items.forEach((element) => {
+      if (element.id === id) {
+        flag = true;
+      }
+    });
+    if (flag === false) {
+      let response = await axios.put(
+        `${process.env.REACT_APP_SERVER}/updatecart/${id}?original_title=${element.original_title}`
+      );
+      const addedObject = {
+        id: id,
+        counts: 1,
+        limit: 10,
+        original_title: response.data.original_title,
+        price: response.data.price,
+      };
+      this.state.items.push(addedObject);
       this.setState({
-        items: response.data,
+        items: this.state.items,
       });
     }
   };
 
+  // Rendering Components
   render() {
     return (
       <Router>
@@ -74,10 +97,12 @@ class App extends React.Component {
         <Switch>
           {/* Home Page */}
           <Route exact path="/Home">
-            <h1>Tombs</h1>
+            <h1>Author: Khaled Tahat</h1>
           </Route>
           {/* Products Page */}
-          <Route exact path="/Products"></Route>
+          <Route exact path="/Products">
+            <Products addToCart={this.addToCart} />
+          </Route>
           {/* Shopping Cart Page */}
           <Route exact path="/Cart">
             <Counters

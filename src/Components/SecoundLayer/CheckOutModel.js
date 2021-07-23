@@ -1,30 +1,38 @@
 import React from "react";
-import {Modal, Button} from 'react-bootstrap/'
+import { Modal, Button, Form } from "react-bootstrap/";
 
 class CheckOutModel extends React.Component {
   render() {
     return (
-      <Modal show={this.props.showCheckOutModel}>
-        <Modal.Header closeButton>
-          <Modal.Title>Add Book</Modal.Title>
-        </Modal.Header>        
+      <Modal show={this.props.showModel}>
+        <Modal.Header>
+          <Modal.Title>Ceck Out</Modal.Title>
+        </Modal.Header>
         <Modal.Body>
-          <form>
-            <input placeholder="Book Name" type="text" name="bookName" />
-            <input placeholder="Description" type="text" name="description" />
-            <input placeholder="Img url" type="text" name="imgUrl" />
-            <select placeholder="State" type="select" name="state">
-              <option value="recommended">Recommended</option>
-              <option value="topTen">Top Ten</option>
-              <option value="readLater">Read Later</option>
-            </select>
-            <input type="submit"></input>
-          </form>
+          <Form>
+            <Form.Group className="mb-3" controlId="formBasicEmail">
+              <Form.Label>Email address</Form.Label>
+              <Form.Control type="email" placeholder="Enter email" />
+              <Form.Text className="text-muted">
+                We'll never share your email with anyone else.
+              </Form.Text>
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="formBasicPassword">
+              <Form.Label>Password</Form.Label>
+              <Form.Control type="password" placeholder="Password" />
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="formBasicCheckbox">
+              <Form.Check type="checkbox" label="Credit Card" />
+            </Form.Group>
+            <Button variant="primary" type="submit">
+              Submit
+            </Button>
+          </Form>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary">
+          <Button onClick={this.props.hideModel} variant="secondary">
             Close
-          </Button>      
+          </Button>
         </Modal.Footer>
       </Modal>
     );
