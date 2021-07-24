@@ -1,7 +1,15 @@
 /* ##################### NabBar CSS ############################# */
 /* Nav.Link.lastchild{float: right;} */
-#cartTag{position: absolute; right: 20px;}
-#navBar{position: fixed; width: 100%;top: 0px}
+#cartTag{position: absolute; right: 90px;}
+#navBar{position: fixed; width: 100%;top: 0px;}
+.Links{color: black;text-decoration: none;}
+.me-auto{color: chartreuse;}
+
+/* ##################### LogInCard CSS ########################### */
+#loginCard{width: 60%; margin: 200px;}
+
+/* ##################### Products CSS ########################### */
+.cardProductDiv{display: inline-block; margin: 60px;}
 
 /* ##################### Counters CSS ########################### */
 #cartDiv{margin-left: 200px;margin-top: 50px;}
@@ -9,7 +17,3 @@
 
 /* ##################### Footer CSS ############################# */
 .gitHub{text-decoration: none;color: rgb(29, 27, 27);padding-left: 10px;}
-#footer{position: fixed; bottom: 0px; width: 100%;}
-
-/* ##################### Products CSS ########################### */
-.cardProductDiv{display: inline-block; margin: 60px;}

@@ -1,10 +1,15 @@
 import React from "react";
 import axios from "axios";
+
 import Products from "./Components/FirstLayer/Products";
 import Counters from "./Components/FirstLayer/Counters";
 import NavBar from "./Components/FirstLayer/NavBar";
 import Footer from "./Components/FirstLayer/Footer";
+import LogInCard from "./Components/FirstLayer/LogInCard";
+import Intro from "./Components/FirstLayer/Intro";
+
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { withAuth0 } from "@auth0/auth0-react";
 import "./App.css";
 
 class App extends React.Component {
@@ -91,26 +96,31 @@ class App extends React.Component {
 
   // Rendering Components
   render() {
+    const isAuthenticated = this.props.auth0.isAuthenticated;
+    console.log("App", this.props.auth0.isAuthenticated);
     return (
       <Router>
         <NavBar numberOfItems={this.state.items.length} />
         <Switch>
           {/* Home Page */}
           <Route exact path="/Home">
-            <h1>Author: Khaled Tahat</h1>
+            <Intro />
+            {!isAuthenticated && <LogInCard />}
           </Route>
           {/* Products Page */}
           <Route exact path="/Products">
-            <Products addToCart={this.addToCart} />
+            {isAuthenticated && <Products addToCart={this.addToCart} />}
           </Route>
           {/* Shopping Cart Page */}
           <Route exact path="/Cart">
-            <Counters
-              items={this.state.items}
-              onDecrement={this.onDecrement}
-              onIncrement={this.onIncrement}
-              onDelete={this.onDelete}
-            />
+            {isAuthenticated && (
+              <Counters
+                items={this.state.items}
+                onDecrement={this.onDecrement}
+                onIncrement={this.onIncrement}
+                onDelete={this.onDelete}
+              />
+            )}
           </Route>
         </Switch>
         <Footer></Footer>
@@ -119,4 +129,4 @@ class App extends React.Component {
   }
 }
 
-export default App;
+export default withAuth0(App);

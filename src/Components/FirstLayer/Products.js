@@ -2,6 +2,7 @@ import React from "react";
 import axios from "axios";
 import { Card, Button } from "react-bootstrap";
 import "./firstLayer.css";
+import {withAuth0} from '@auth0/auth0-react';
 
 class Products extends React.Component {
   constructor(props) {
@@ -10,6 +11,8 @@ class Products extends React.Component {
   }
 
   componentDidMount = async () => {
+    const isAuthenticated = this.props.auth0.isAuthenticated;
+    console.log('Products', isAuthenticated);
     let response = [];
     try {
       response = await axios.get(`${process.env.REACT_APP_SERVER}/getlists`);
@@ -35,6 +38,7 @@ class Products extends React.Component {
                 <Card.Body>
                   <Card.Title>{element.original_title}</Card.Title>
                   <Card.Text>{element.overview}</Card.Text>
+                  <Card.Text>Price: {element.price} $</Card.Text>
                   <Button
                     onClick={() => this.props.addToCart(index, element)}
                     variant="primary"
@@ -51,4 +55,4 @@ class Products extends React.Component {
   }
 }
 
-export default Products;
+export default withAuth0(Products);
